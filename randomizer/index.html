@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror App</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton+SC&display=swap" rel="stylesheet">
+</head>
+<body>
+ 
+    <h2 style="text-align:center">Mirror App</h2>
+    <video id="camera" autoplay></video>
+    
+    <div class="camera-container">
+        <video id="camera-preview"></video>
+        <button id="capture-btn"> Capture </button>
+        <button id="mirror"Mirror</button></button>
+        <button id="forward-btn">forward</button>
+        <button id="edit-btn">Edit</button>
+       
+    </div>
+
+    <div class="mirror-container">
+        <img id="mirror-image" src=""  alt="Mirror Duplicate">     
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </div>
+
+<div class="container">
+
+  <!-- Photos -->
+  <div class="row">
+    <div class="col-md-4">
+      <input type="file" class="d-none" id="addPhotosInput" accept="image/png, image/gif, image/jpeg">
+      <button class="btn btn-secondary" id="addPhotosBtn">Add Photos <i class="fa fa-camera"></i> </button>
+    </div>
+    <div class="col-md-12">
+      <div class="photos-list">
+        <ul>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+<!-- Video -->
+  <div class="row">
+    <div class="col-md-4">
+      <input type="file" class="d-none" id="addVideosInput" accept=" video/*">
+      <button class="btn btn-secondary" id="addVideosBtn">Add Videos <i class="fa fa-camera"></i> </button>
+    </div>
+    <div class="col-md-12">
+      <div class="video-list">
+        <ul>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<h2 style="text-align:center">Lightbox Photos</h2>
+
+<div class="row">
+  <div class="column">
+    <img src="photo1.jpg" style="width:100%" onclick="openModal();currentSlide(1)" class="hover-shadow cursor">
+  </div>
+  <div class="column">
+    <img src="photo2.jpg" style="width:100%" onclick="openModal();currentSlide(2)" class="hover-shadow cursor">
+  </div>
+  <div class="column">
+    <img src="photo3.jpg" style="width:100%" onclick="openModal();currentSlide(3)" class="hover-shadow cursor">
+  </div>
+  <div class="column">
+    <img src="photo4.jpg" style="width:100%" onclick="openModal();currentSlide(4)" class="hover-shadow cursor">
+  </div>
+</div>
+
+<div id="myModal" class="modal">
+  <span class="close cursor" onclick="closeModal()">&times;</span>
+  <div class="modal-content">
+
+    <div class="mySlides">
+      <div class="numbertext">1 / 4</div>
+      <img src="photo1.jpg" style="width:100%">
+    </div>
+
+    <div class="mySlides">
+      <div class="numbertext">2 / 4</div>
+      <img src="photo2.jpg" style="width:100%">
+    </div>
+
+    <div class="mySlides">
+      <div class="numbertext">3 / 4</div>
+      <img src="photo3.jpg" style="width:100%">
+    </div>
+    
+    <div class="mySlides">
+      <div class="numbertext">4 / 4</div>
+      <img src="photo4.jpg" style="width:100%">
+    </div>
+    
+    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+    <div class="caption-container">
+      <p id="caption"></p>
+    </div>
+
+
+    <div class="column">
+      <img class="demo cursor" src="photo1.jpg" style="width:100%" onclick="currentSlide(1)" alt="Nature and sunrise">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="photo2.jpg" style="width:100%" onclick="currentSlide(2)" alt="Snow">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="photo3.jpg" style="width:100%" onclick="currentSlide(3)" alt="Mountains and fjords">
+    </div>
+    <div class="column">
+      <img class="demo cursor" src="photo4.jpg" style="width:100%" onclick="currentSlide(4)" alt="Northern Lights">
+    </div>
+  </div>
+</div>
+
+  <!--upload functions-->
+  <form action="#type your action here" method="POST" enctype="multipart/form-data" name="myForm">
+    <div id="yourBtn" onclick="getFile()">click to upload a file</div>
+    <!-- this is your file input tag, so i hide it!-->
+    <!-- i used the onchange event to fire the form submission-->
+    <div style='height: 0px;width: 0px; overflow:hidden;'><input id="upfile" type="file" value="upload" onchange="sub(this)" /></div>
+    <!-- here you can have file submit button or you can write a simple script to upload the file automatically-->
+    <!-- <input type="submit" value='submit' > -->
+  </form>
+
+
+  <style>
+    /* Style your app as needed */
+.camera-container {
+  /* Camera preview styling */
+  border: 2px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Add any other camera-specific styles here */
+}
+
+.mirror-container {
+  /* Mirror duplicate styling */
+  transform: scaleX(-1); /* Flip horizontally */
+  /* Add any other mirror-specific styles here */
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 10px;
+  padding: 20px;
+}
+
+.gallery-item {
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/*css*/
+.photos-list ul,
+.videos-list ul {
+margin: 0px;
+padding: 0px;
+}
+
+.photos-list ul li,
+.videos-list ul li {
+list-style: none;
+float: left;
+width: 19%;
+margin: 5px;
+position: relative;
+}
+
+.photos-list ul li img,
+.videos-list ul li img {
+width: 100%;
+border-radius: 10px;
+height: 110px;
+}
+
+.photos-list ul li span,
+.videos-list ul li span {
+position: absolute;
+bottom: 0;
+right: 0;
+background: rgba(0, 0, 0, .5);
+padding: 5px 10px;
+cursor: pointer;
+}
+
+.photos-list ul li span svg,
+.videos-list ul li span svg {
+color: #fff;
+}
+
+ /*upload styles*/
+
+ #myFile {
+  display: none; /* Hide the default file input */
+}
+
+/* Style your custom button */
+#customButton {
+  background-color: #0074D9;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+
+/*sliding show pics*/
+body {
+  font-family: Verdana, sans-serif;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.row > .column {
+  padding: 0 8px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+  float: left;
+  width: 25%;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: black;
+}
+
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  width: 90%;
+  max-width: 1200px;
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #999;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mySlides {
+  display: none;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+img {
+  margin-bottom: -4px;
+}
+
+.caption-container {
+  text-align: center;
+  background-color: black;
+  padding: 2px 16px;
+  color: white;
+}
+
+.demo {
+  opacity: 0.6;
+}
+
+.active,
+.demo:hover {
+  opacity: 1;
+}
+
+img.hover-shadow {
+  transition: 0.3s;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#yourBtn {
+  position: relative;
+  top: 150px;
+  font-family: calibri;
+  width: 150px;
+  padding: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border: 1px dashed #BBB;
+  text-align: center;
+  background-color: #DDD;
+  cursor: pointer;
+}
+
+
+/*image transform*/
+img:hover {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+
+/*font styles*/
+.anton-sc-regular {
+  font-family: "Anton SC", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+  </style>
+
+</div>
+    <script>// Get DOM elements
+      const cameraPreview = document.getElementById('camera-preview');
+      const mirrorImage = document.getElementById('mirror-image');
+      const captureBtn = document.getElementById('capture-btn');
+      const editBtn = document.getElementById('edit-btn');
+      
+      // Initialize camera
+      navigator.mediaDevices.getUserMedia({ video: true })
+          .then((stream) => {
+              cameraPreview.srcObject = stream;
+              cameraPreview.play();
+          })
+          .catch((error) => console.error('Camera access error:', error));
+      
+      // Capture button click
+      captureBtn.addEventListener('click', () => {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = cameraPreview.videoWidth;
+          canvas.height = cameraPreview.videoHeight;
+          context.drawImage(cameraPreview, 0, 0, canvas.width, canvas.height);
+      
+          // Create mirror duplicate (flip horizontally)
+          context.translate(canvas.width, 0);
+          context.scale(-1, 1);
+          mirrorImage.src = canvas.toDataURL('image/png');
+      });
+      
+      // Edit button click (implement your editing logic here)
+      editBtn.addEventListener('click', () => {
+          // Allow partial or complete replacement
+          // Handle user permissions and storage
+          // Implement sharing and downloading
+          // Add song upload and subtitles (if needed)
+      });
+      
+      
+      //web share API
+      const shareData = {
+          title: "MDN",
+          text: "Learn web development on MDN!",
+          url: "https://developer.mozilla.org",
+        };
+       
+        const btn = document.querySelector("button");
+        const resultPara = document.querySelector(".result");
+        
+        btn.addEventListener("click", async () => {
+          try {
+            await navigator.share(shareData);
+            resultPara.textContent = "MDN shared successfully";
+          } catch (err) {
+            resultPara.textContent = `Error: ${err}`;
+          }
+        });
+        
+      
+        //To handle sharing images using the Web Share API
+        const imageFile = new File([], "my-image.png", { type: "image/png" });
+      
+      
+        //Invoke the Share Dialog
+        if (navigator.canShare && navigator.canShare({ files: [imageFile] })) {
+          navigator.share({
+            files: [imageFile],
+            title: "My Awesome Image",
+            text: "Check out this cool image!",
+          });
+        }
+        
+        function openModal(imageSrc) {
+          var modal = document.getElementById("myModal");
+          var modalImg = document.getElementById("modalImage");
+          modal.style.display = "block";
+          modalImg.src = imageSrc;
+        }
+        
+        function closeModal() {
+          var modal = document.getElementById("myModal");
+          modal.style.display = "none";
+        }
+        
+      // to add the button 
+      $('#addPhotosBtn').click(function() {
+        $(this).parents().find('#addPhotosInput').click();
+      });
+      
+      document.getElementById('addPhotosInput').onchange = e => {
+        const file = e.target.files[0];
+        const url = URL.createObjectURL(file);
+        const li = ` <li> <img src=" ${url} ">
+         <span><i class="fa fa-trash"></i></span>
+         </li>`
+        $('.photos-list ul').append(li);
+      };
+      
+      $('#addVideosBtn').click(function() {
+        $(this).parents().find('#addVideosInput').click();
+      });
+      
+      document.getElementById('addVideosInput').onchange = e => {
+        const file = e.target.files[0];
+        const url = URL.createObjectURL(file);
+        const li = ` <li> <video controls="controls" src=" ${url} " type="video/mp4" width="400px" height="200px"></video>
+             <span><i class="fa fa-trash"></i></span>
+         </li>`
+        $('.video-list ul').append(li);
+      };
+      
+      
+      const video = document.getElementById('video');
+      const canvas = document.getElementById('mirror-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      video.addEventListener('play', () => {
+          const w = video.videoWidth;
+          const h = video.videoHeight;
+          canvas.width = w;
+          canvas.height = h;
+      
+          function drawFrame() {
+              if (video.paused || video.ended) return;
+              ctx.clearRect(0, 0, w, h);
+      
+              // Apply mirror effect
+              ctx.scale(-1, 1);
+              ctx.drawImage(video, -w, 0, w, h);
+              ctx.scale(-1, 1); // Reset scale
+      
+              requestAnimationFrame(drawFrame);
+          }
+      
+          video.play();
+          drawFrame();
+      });
+
+
+      //for the upload sesstion
+      const customButton = document.getElementById('customButton');
+const fileInput = document.getElementById('myFile');
+const customText = document.getElementById('customText'); // Create a <span> element for displaying the file name
+
+customButton.addEventListener('click', () => {
+    fileInput.click(); // Trigger the hidden file input
+});
+
+fileInput.addEventListener('change', () => {
+    const fileName = fileInput.files[0].name;
+    customText.textContent = fileName;
+});
+
+
+function openModal() {
+  document.getElementById("myModal").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("myModal").style.display = "none";
+}
+
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("demo");
+  var captionText = document.getElementById("caption");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+  captionText.innerHTML = dots[slideIndex-1].alt;
+}
+
+
+function getFile() {
+  document.getElementById("upfile").click();
+}
+
+function sub(obj) {
+  var file = obj.value;
+  var fileName = file.split("\\");
+  document.getElementById("yourBtn").innerHTML = fileName[fileName.length - 1];
+  document.myForm.submit();
+  event.preventDefault();
+}
+      </script>
+    
+</body>
+</html>
+

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror App</title>
+    <style>
+        /* Your CSS styles here */
+    </style>
+</head>
+<body>
+    <video id="camera" autoplay></video>
+    <button id="capture">Capture</button>
+    <button id="mirror">Mirror</button>
+    <button id="save">Save</button>
+    <!-- Other UI elements for editing, sharing, etc. -->
+
+    <script>
+        const videoElement = document.getElementById('camera');
+        const captureButton = document.getElementById('capture');
+        const mirrorButton = document.getElementById('mirror');
+        const saveButton = document.getElementById('save');
+
+        // Get user media (camera access)
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                videoElement.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('Error accessing camera:', error);
+            });
+
+        // Capture photo or video
+        captureButton.addEventListener('click', () => {
+            // Implement photo/video capture logic
+            // Save the captured media (base64 or file)
+        });
+
+        // Mirror duplicate
+        mirrorButton.addEventListener('click', () => {
+            // Implement mirror effect (CSS or canvas)
+        });
+
+        // Save or download
+        saveButton.addEventListener('click', () => {
+            // Implement saving logic
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+// second option 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror Video Frame</title>
+</head>
+<body>
+    <video id="video" src="your-video.mp4" autoplay loop></video>
+    <canvas id="mirror-canvas"></canvas>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('mirror-canvas');
+        const ctx = canvas.getContext('2d');
+
+        video.addEventListener('play', () => {
+            const w = video.videoWidth;
+            const h = video.videoHeight;
+            canvas.width = w;
+            canvas.height = h;
+
+            function drawFrame() {
+                if (video.paused || video.ended) return;
+                ctx.clearRect(0, 0, w, h);
+
+                // Apply mirror effect
+                ctx.scale(-1, 1);
+                ctx.drawImage(video, -w, 0, w, h);
+                ctx.scale(-1, 1); // Reset scale
+
+                requestAnimationFrame(drawFrame);
+            }
+
+            video.play();
+            drawFrame();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+//3 option 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror Effect</title>
+    <style>
+        #mirror-image {
+            transform: scaleX(-1); /* Horizontal mirror effect */
+            /* Or use scaleY(-1) for vertical mirror effect */
+        }
+    </style>
+</head>
+<body>
+    <img id="mirror-image" src="your-image.jpg" alt="Mirrored Image">
+</body>
+</html>
+
+
+
+//photo and video option 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<div class="container">
+
+  <!-- Photos -->
+  <div class="row">
+    <div class="col-md-4">
+      <input type="file" class="d-none" id="addPhotosInput" accept="image/png, image/gif, image/jpeg">
+      <button class="btn btn-secondary" id="addPhotosBtn">Add Photos <i class="fa fa-camera"></i> </button>
+    </div>
+    <div class="col-md-12">
+      <div class="photos-list">
+        <ul>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+<!-- Video -->
+
+  <div class="row">
+    <div class="col-md-4">
+      <input type="file" class="d-none" id="addVideosInput" accept=" video/*">
+      <button class="btn btn-secondary" id="addVideosBtn">Add Videos <i class="fa fa-camera"></i> </button>
+    </div>
+    <div class="col-md-12">
+      <div class="video-list">
+        <ul>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+----
+//css 
+
+.photos-list ul,
+.videos-list ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+.photos-list ul li,
+.videos-list ul li {
+  list-style: none;
+  float: left;
+  width: 19%;
+  margin: 5px;
+  position: relative;
+}
+
+.photos-list ul li img,
+.videos-list ul li img {
+  width: 100%;
+  border-radius: 10px;
+  height: 110px;
+}
+
+.photos-list ul li span,
+.videos-list ul li span {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, .5);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.photos-list ul li span svg,
+.videos-list ul li span svg {
+  color: #fff;
+}
+
+
+// javascript 
+
+$('#addPhotosBtn').click(function() {
+  $(this).parents().find('#addPhotosInput').click();
+});
+
+document.getElementById('addPhotosInput').onchange = e => {
+  const file = e.target.files[0];
+  const url = URL.createObjectURL(file);
+  const li = ` <li> <img src=" ${url} ">
+   <span><i class="fa fa-trash"></i></span>
+   </li>`
+  $('.photos-list ul').append(li);
+};
+
+$('#addVideosBtn').click(function() {
+  $(this).parents().find('#addVideosInput').click();
+});
+
+document.getElementById('addVideosInput').onchange = e => {
+  const file = e.target.files[0];
+  const url = URL.createObjectURL(file);
+  const li = ` <li> <video controls="controls" src=" ${url} " type="video/mp4" width="400px" height="200px"></video>
+       <span><i class="fa fa-trash"></i></span>
+   </li>`
+  $('.video-list ul').append(li);
+};
